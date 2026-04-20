@@ -74,7 +74,7 @@ export default function ExplorePolicyPage() {
   const quickFilters = [
     { label: 'Europe · AI', country: 'Europe', domain: 'AI' },
     { label: 'USA · Healthcare', country: 'USA', domain: 'Healthcare' },
-    { label: 'India · Fintech', country: 'India', domain: 'Fintech' },
+    { label: 'India · Consumer Apps', country: 'India', domain: 'Consumer Apps' },
     { label: 'Australia · Insurance', country: 'Australia', domain: 'Insurance' },
   ]
 
