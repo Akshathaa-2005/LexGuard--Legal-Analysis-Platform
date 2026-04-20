@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [expandedPolicyId, setExpandedPolicyId] = useState<string | null>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:5000'
 
   const countries = ['Europe', 'Australia', 'USA', 'India']
   const domains = ['AI', 'Healthcare', 'Fintech', 'Crypto', 'Biotech', 'Consumer Apps', 'Insurance']
@@ -52,7 +53,7 @@ export default function DashboardPage() {
     setIsChatLoading(true)
 
     try {
-      const res = await axios.post('http://localhost:5000/chat', {
+      const res = await axios.post(`${apiBaseUrl}/chat`, {
         message: userMsg,
         context: legalReport || {},
         product_description: productDescription,
@@ -60,7 +61,7 @@ export default function DashboardPage() {
       })
       setChatMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }])
     } catch {
-      setChatMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }])
+      setChatMessages(prev => [...prev, { role: 'assistant', content: 'Please upload or enter your product description first so I can assist you better.' }])
     } finally {
       setIsChatLoading(false)
     }
@@ -75,18 +76,18 @@ export default function DashboardPage() {
     formData.append('file', file)
 
     try {
-      const response = await axios.post('http://localhost:5000/upload', formData)
+      const response = await axios.post(`${apiBaseUrl}/upload`, formData)
       setExtractedText(response.data.extracted_text)
       setProductDescription(response.data.extracted_text)
     } catch (err) {
-      setError('Failed to extract text from file')
+      setError('We could not read your file. Please upload a valid PDF or DOCX document and try again.')
       console.error(err)
     }
   }
 
   const handleAnalyze = async () => {
     if (!productDescription.trim()) {
-      setError('Please provide a product description')
+      setError('Please enter your product or project description before starting the analysis.')
       return
     }
 
@@ -94,7 +95,7 @@ export default function DashboardPage() {
     setError('')
 
     try {
-      const response = await axios.post('http://localhost:5000/analyze', {
+      const response = await axios.post(`${apiBaseUrl}/analyze`, {
         product_description: productDescription,
         country: selectedCountry,
         domain: selectedDomain,
@@ -112,7 +113,7 @@ Ask me anything about legal requirements or how to address risks.`,
         },
       ])
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Analysis failed')
+      setError(err.response?.data?.error || 'We were unable to complete the legal analysis right now. Please try again in a few moments.')
       console.error(err)
     } finally {
       setIsAnalyzing(false)
@@ -121,7 +122,7 @@ Ask me anything about legal requirements or how to address risks.`,
 
   const downloadPolicy = async (documentId: string, policyName: string) => {
     try {
-      const response = await axios.get(`http://localhost:5000/policy/${documentId}`, {
+      const response = await axios.get(`${apiBaseUrl}/policy/${documentId}`, {
         responseType: 'blob',
       })
 
