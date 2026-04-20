@@ -42,27 +42,6 @@ This often leads to:
 
 LexGuard solves this by providing early-stage legal intelligence.
 
----
-
-## 🏗 System Architecture
-
-```text
-User Input
-   ↓
-File Upload / Product Description
-   ↓
-RAG Retrieval System
-   ↓
-Vector Search on Legal Documents
-   ↓
-LLM-as-Judge Multi-Stage Filtering
-   ↓
-Context Compression (50 → 20 → 10 → 5)
-   ↓
-Final Legal Analysis Generation
-   ↓
-Frontend Dashboard Report
-
 ## ⚙️ Tech Stack
 
 ### Backend
@@ -120,7 +99,28 @@ Users can submit startup ideas using:
 - Crypto  
 - Biotech  
 - Consumer Apps  
-- Insurance  
+- Insurance 
+
+---
+
+## 🏗 System Architecture
+
+```text
+User Input
+   ↓
+File Upload / Product Description
+   ↓
+RAG Retrieval System
+   ↓
+Vector Search on Legal Documents
+   ↓
+LLM-as-Judge Multi-Stage Filtering
+   ↓
+Context Compression (50 → 20 → 10 → 5)
+   ↓
+Final Legal Analysis Generation
+   ↓
+Frontend Dashboard Report 
 
 ## 🌟 Novelty of the Project
 
